@@ -17,6 +17,7 @@ package com.liferay.mobile.screens.context;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.SharedPreferences;
 
 /**
  * @author Jose Manuel Navarro
@@ -24,6 +25,7 @@ import android.content.ContextWrapper;
 public class LiferayScreensContext {
 
     private static Context context;
+    private static SharedPreferences sharedPreferences;
 
     private LiferayScreensContext() {
     }
@@ -38,6 +40,18 @@ public class LiferayScreensContext {
         LiferayScreensContext.context = context.getApplicationContext();
 
         LiferayServerContext.reloadFromResources(context.getResources(), context.getPackageName());
+    }
+
+    public static void init(SharedPreferences sharedPreferences) {
+        LiferayScreensContext.sharedPreferences = sharedPreferences;
+
+        LiferayServerContext.loadFromSharedPreferences(sharedPreferences);
+    }
+
+    public static void reinit(SharedPreferences sharedPreferences) {
+        LiferayScreensContext.sharedPreferences = sharedPreferences;
+
+        LiferayServerContext.reloadFromSharedPreferences(sharedPreferences);
     }
 
     /**

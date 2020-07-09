@@ -15,6 +15,7 @@
 package com.liferay.mobile.screens.context;
 
 import android.content.res.Resources;
+import android.content.SharedPreferences;
 import com.liferay.mobile.android.auth.basic.CookieAuthentication;
 import com.liferay.mobile.screens.R;
 import com.squareup.okhttp.Cache;
@@ -56,6 +57,7 @@ public class LiferayServerContext {
         classFactory = resources.getString(R.string.liferay_class_factory);
         portalVersion = LiferayPortalVersion.fromInt(resources.getInteger(R.integer.liferay_portal_version));
         versionFactory = resources.getString(R.string.liferay_version_factory);
+
     }
 
     public static void loadFromResources(Resources resources, final String packageName) {
@@ -63,6 +65,20 @@ public class LiferayServerContext {
         if (companyId == 0 || groupId == 0 || server == null) {
             reloadFromResources(resources, packageName);
         }
+    }
+
+    public static void reloadFromSharedPreferences(SharedPreferences sharedPreferences){
+
+        companyId = Long.valueOf(sharedPreferences.getString("liferay_company_id", ""));
+        groupId = Long.valueOf(sharedPreferences.getString("liferay_group_id", ""));
+        server = sharedPreferences.getString("liferay_server", "");
+        classFactory = sharedPreferences.getString("liferay_class_factory", "");
+        portalVersion = LiferayPortalVersion.fromInt(Integer.valueOf(sharedPreferences.getString("liferay_portal_version", "70")));
+        versionFactory = sharedPreferences.getString("liferay_version_factory", "");
+    }
+
+    public static void loadFromSharedPreferences(SharedPreferences sharedPreferences){
+        reloadFromSharedPreferences(sharedPreferences);
     }
 
     public static long getCompanyId() {
